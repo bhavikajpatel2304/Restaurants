@@ -36,4 +36,23 @@ router.post("/restaurants",
     }
 );
 
+
+// GET
+// path - /api/restaurants/
+router.get("/restaurants/:_id",
+    async(req, res) => {
+
+        const _id = req.params._id;
+
+        Restaurant.findById(_id, (err, restaurant) => {
+            
+            if(err) {
+                return Response.error(res, Code.DATABASE_ERROR, err.message);
+            }
+                
+            return Response.success(res, Code.SUCCESS, "Record found!", restaurant);
+        });
+    }
+)
+
 module.exports = router;
