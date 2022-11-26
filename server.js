@@ -28,7 +28,7 @@ const options = {
 // Routes
 // uncomment if needed
 //app.use("/images" , express.static(path.join(__dirname, "images")));
-app.use("/restaurants" , restaurants);
+app.use("/api" , restaurants);
 
 // Error handling route
 app.all("*", (req, res) => {
@@ -39,7 +39,7 @@ app.all("*", (req, res) => {
 mongoose.connect(URL, options).then((result) => {
     app.listen(PORT , (req , res) => {
         console.log(`Server has started successfully on port: ${PORT}`);
-    })
+    });
 })
 .catch((err) => {
     console.log(`Server error -> ${err}`);

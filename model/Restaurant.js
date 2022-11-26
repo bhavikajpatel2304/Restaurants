@@ -29,7 +29,12 @@ const Restaurant = new mongoose.Schema({
 
         grades: [
             {
-                date: Date,
+                _id: false,
+                date: {
+                    type: Date,
+                    required: true,
+                    default: Date
+                },
                 grade: String,
                 score: Number
             }
