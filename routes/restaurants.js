@@ -143,7 +143,7 @@ router.put("/restaurants/:_id?",
         
             if (idResponse) {
                 //update an existing restaurant
-                const response = await Controller.updateRestaurant(data);
+                const response = await Controller.updateRestaurantById(data);
             
             if(response.error) return Response.error(res, Code.UNPROCESSABLE_ENTITY, response.error);
     
@@ -169,7 +169,7 @@ router.delete("/restaurants/:_id?",
             if (idResponse) {
 
                 //delete an existing restaurant
-                const response = await Controller.deleteRestaurant(_id);
+                const response = await Controller.deleteRestaurantById(_id);
 
                 if(response.error) return Response.error(res, Code.UNPROCESSABLE_ENTITY, response.error);
         
