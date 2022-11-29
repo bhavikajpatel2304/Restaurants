@@ -2,6 +2,7 @@ const express = require("express");
 const Code = require("../utils/code");
 const Response = require("../utils/response");
 const Restaurant = require("../model/Restaurant");
+const Controller = require("./controller");
 
 const router = express.Router();
 
@@ -26,13 +27,13 @@ router.post("/restaurants",
         }
 
         // create new record
-        Restaurant.create(data, (err, restaurant) => {
-            if(err) {
-                return Response.error(res, Code.DATABASE_ERROR, err.message);
-            }
+        const response = await Controller.addNewRestaurant(data);
 
-            return Response.success(res, Code.SUCCESS, "Record inserted!", restaurant);
-        })
+        if(response.error) return Response.error(res, Code.UNPROCESSABLE_ENTITY, response.error);
+
+        else if(response.restaurant_details) return Response.success(res, Code.SUCCESS, "Record inserted!", response.restaurant_details);
+
+        else return Response.error(res, Code.DATABASE_ERROR, "Something went wrong!");
     }
 );
 
@@ -44,14 +45,13 @@ router.get("/restaurants/:_id",
 
         const _id = req.params._id;
 
-        Restaurant.findById(_id, (err, restaurant) => {
-            
-            if(err) {
-                return Response.error(res, Code.DATABASE_ERROR, err.message);
-            }
-                
-            return Response.success(res, Code.SUCCESS, "Record found!", restaurant);
-        });
+        const response = await Controller.getRestaurantById(_id);
+
+        if(response.error)return Response.error(res, Code.UNPROCESSABLE_ENTITY, response.error);
+
+        else if(response.restaurant_details) Response.success(res, Code.SUCCESS, "Record found!", response.restaurant_details);
+
+        else return Response.error(res, Code.DATABASE_ERROR, "Something went wrong!");
     }
 )
 
