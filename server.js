@@ -6,6 +6,7 @@ const cors = require("cors");
 const path = require("path");
 const CONFIG = require("./utils/db");
 const {errors} = require("celebrate");
+const exphbs = require('express-handlebars');
 
 const restaurants = require("./routes/restaurants");
 const app = express();
@@ -13,6 +14,16 @@ const app = express();
 // config
 const URL = CONFIG.MONGO_URL;
 const PORT = CONFIG.PORT;
+
+const helpers = exphbs.create({
+    defaultLayout: 'main',
+    extname: '.hbs',
+})
+
+app.use(express.static(path.join(__dirname, 'public')));
+
+app.engine('.hbs', helpers.engine);
+app.set('view engine', '.hbs');
 
 
 app.use(cors());

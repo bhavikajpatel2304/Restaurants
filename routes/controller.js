@@ -38,7 +38,7 @@ const getAllRestaurants = async (req) => {
 
     if(borough) query.borough = borough;
 
-    return await Restaurant.find(query).skip((page-1)*perPage).limit(perPage).sort({'restaurant_id' : 'asc'}).then(restaurant => {
+    return await Restaurant.find(query).lean().skip((page-1)*perPage).limit(perPage).sort({'restaurant_id' : 'asc'}).then(restaurant => {
         result.restaurant_details = restaurant;
         return result;
     })

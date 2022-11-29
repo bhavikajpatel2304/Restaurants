@@ -69,7 +69,40 @@ router.get("/restaurants/:_id?",
     }
 )
 
+// Handlebars
 // GET
-// path - 
+// path - /api/find
+router.get("/find", 
+
+    async(req, res, next) => {
+
+        res.render("Form", {layout: false})
+    }
+)
+
+// GET
+// path - /api/find-restaurants
+router.get("/find-restaurants",
+
+    // middleware to handle errors
+    celebrate({
+        [Segments.QUERY]: Joi.object().keys({
+            page: Joi.number().integer().required(),
+            perPage: Joi.number().integer().required(),
+            borough: Joi.string().optional()
+        })
+    }),
+
+    async(req, res) => {
+
+        let response = await Controller.getAllRestaurants(req);
+
+        if(response.error)return Response.error(res, Code.UNPROCESSABLE_ENTITY, response.error);
+        
+        else if(response.restaurant_details) res.render("Restaurants", {restaurants: response.restaurant_details, layout: false});
+
+        else return Response.error(res, Code.DATABASE_ERROR, "Something went wrong!");
+    }
+)
 
 module.exports = router;
