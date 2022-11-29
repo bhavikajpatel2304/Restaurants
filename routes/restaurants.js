@@ -165,7 +165,7 @@ router.delete("/restaurants/:_id?",
 
                 if(response.error) return Response.error(res, Code.UNPROCESSABLE_ENTITY, response.error);
         
-                else if(response.restaurant_details) return Response.success(res, Code.SUCCESS, "Record Updated!", response.restaurant_details);
+                else if(response.restaurant_details) return Response.success(res, Code.SUCCESS, "Record Deleted!", response.restaurant_details);
         
                 else return Response.error(res, Code.DATABASE_ERROR, "Something went wrong!");
             }
