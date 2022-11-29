@@ -76,7 +76,7 @@ router.get("/find",
 
     async(req, res, next) => {
 
-        res.render("Form", {layout: false})
+        res.render("Form")
     }
 )
 
@@ -99,9 +99,77 @@ router.get("/find-restaurants",
 
         if(response.error)return Response.error(res, Code.UNPROCESSABLE_ENTITY, response.error);
         
-        else if(response.restaurant_details) res.render("Restaurants", {restaurants: response.restaurant_details, layout: false});
+        else if(response.restaurant_details) res.render("Restaurants", {restaurants: response.restaurant_details});
 
         else return Response.error(res, Code.DATABASE_ERROR, "Something went wrong!");
+    }
+)
+
+// PUT
+// path - /api/restaurants
+router.put("/restaurants/:_id?",
+
+    async(req, res) => {
+
+        const _id = req.params._id;
+
+        // collect data
+        let data = {
+            address: {
+                building: req.body.building,
+                coord: req.body.coord,
+                street: req.body.street,
+                zipcode: req.body.zipcode
+            },
+            borough: req.body.borough,
+            cuisine: req.body.cuisine,
+            grades: req.body.grades,
+            name: req.body.name,
+            restaurant_id: req.body.restaurant_id
+        }
+
+        //let response;
+
+        if(_id) {
+            let idResponse = await Controller.getRestaurantById(_id);
+        
+            if (idResponse) {
+                //update an existing restaurant
+                const response = await Controller.updateRestaurant(data);
+            
+            if(response.error) return Response.error(res, Code.UNPROCESSABLE_ENTITY, response.error);
+    
+            else if(response.restaurant_details) return Response.success(res, Code.SUCCESS, "Record Updated!", response.restaurant_details);
+    
+            else return Response.error(res, Code.DATABASE_ERROR, "Something went wrong!");
+            }
+        }
+    }
+)
+
+// DELETE
+// path - /api/restaurants
+router.delete("/restaurants/:_id?",
+
+    async(req, res) => {
+
+        const _id = req.params._id;
+
+        if(_id) {
+            let idResponse = await Controller.getRestaurantById(_id);
+        
+            if (idResponse) {
+
+                //delete an existing restaurant
+                const response = await Controller.deleteRestaurant(_id);
+
+                if(response.error) return Response.error(res, Code.UNPROCESSABLE_ENTITY, response.error);
+        
+                else if(response.restaurant_details) return Response.success(res, Code.SUCCESS, "Record Updated!", response.restaurant_details);
+        
+                else return Response.error(res, Code.DATABASE_ERROR, "Something went wrong!");
+            }
+        }
     }
 )
 

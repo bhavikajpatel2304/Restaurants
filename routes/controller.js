@@ -48,8 +48,38 @@ const getAllRestaurants = async (req) => {
     })
 }
 
+// update an existing restaurant
+const updateRestaurant = async (data) => {
+
+    let result = {};
+    
+    // update an existing record
+    return await Restaurant.updateOne(data).then(restaurant => {
+        result.restaurant_details = restaurant;
+        return result;
+    }).catch(err => {
+        result.error = err;
+        return result;
+    });
+}
+
+// delete an existing restaurant
+const deleteRestaurant = async (_id) => {
+
+    let result = {};
+    return await Restaurant.deleteOne({_id}).then(restaurant => {
+        result.restaurant_details = restaurant;
+        return result;
+    }).catch(err => {
+        result.error= err;
+        return result;
+    })
+}
+
 module.exports = {
     addNewRestaurant,
     getRestaurantById,
-    getAllRestaurants
+    getAllRestaurants,
+    updateRestaurant,
+    deleteRestaurant
 }
