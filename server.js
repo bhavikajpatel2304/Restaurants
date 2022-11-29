@@ -5,6 +5,7 @@ const mongoose = require("mongoose");
 const cors = require("cors");
 const path = require("path");
 const CONFIG = require("./utils/db");
+const {errors} = require("celebrate");
 
 const restaurants = require("./routes/restaurants");
 const app = express();
@@ -29,6 +30,9 @@ const options = {
 // uncomment if needed
 //app.use("/images" , express.static(path.join(__dirname, "images")));
 app.use("/api" , restaurants);
+
+// celebrate error handler
+app.use(errors());
 
 // Error handling route
 app.all("*", (req, res) => {

@@ -1,8 +1,8 @@
 const express = require("express");
 const Code = require("../utils/code");
 const Response = require("../utils/response");
-const Restaurant = require("../model/Restaurant");
 const Controller = require("./controller");
+const { celebrate, Joi, Segments } = require('celebrate');
 
 const router = express.Router();
 
@@ -40,19 +40,36 @@ router.post("/restaurants",
 
 // GET
 // path - /api/restaurants/
-router.get("/restaurants/:_id",
+router.get("/restaurants/:_id?",
+
+    // middleware to handle errors
+    celebrate({
+        [Segments.QUERY]: Joi.object().keys({
+            page: Joi.number().integer().required(),
+            perPage: Joi.number().integer().required(),
+            borough: Joi.string().optional()
+        })
+    }),
+
     async(req, res) => {
 
         const _id = req.params._id;
 
-        const response = await Controller.getRestaurantById(_id);
+        let response;
+
+        if(_id) response = await Controller.getRestaurantById(_id);
+
+        else response = await Controller.getAllRestaurants(req);
 
         if(response.error)return Response.error(res, Code.UNPROCESSABLE_ENTITY, response.error);
 
-        else if(response.restaurant_details) Response.success(res, Code.SUCCESS, "Record found!", response.restaurant_details);
+        else if(response.restaurant_details) Response.success(res, Code.SUCCESS, "Record(s) found!", response.restaurant_details);
 
         else return Response.error(res, Code.DATABASE_ERROR, "Something went wrong!");
     }
 )
+
+// GET
+// path - 
 
 module.exports = router;

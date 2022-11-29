@@ -30,7 +30,26 @@ const getRestaurantById = async (_id) => {
     })
 }
 
+// get all restaurants
+const getAllRestaurants = async (req) => {
+    let {page, perPage, borough} = req.query;
+
+    let query = {}, result = {};
+
+    if(borough) query.borough = borough;
+
+    return await Restaurant.find(query).skip((page-1)*perPage).limit(perPage).sort({'restaurant_id' : 'asc'}).then(restaurant => {
+        result.restaurant_details = restaurant;
+        return result;
+    })
+    .catch(err => {
+        result.error = err;
+        return result;
+    })
+}
+
 module.exports = {
     addNewRestaurant,
-    getRestaurantById
+    getRestaurantById,
+    getAllRestaurants
 }
