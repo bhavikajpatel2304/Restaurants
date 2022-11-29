@@ -2,13 +2,24 @@
 <html>
   <head>
     <title></title>
-    <link rel="stylesheet" href="/styles/Restaurants.css"/>
   </head>
   <body>
-    <div class="grid-container">
-        {{#each restaurants}}
-            <div>{{this.name}}</div>
-        {{/each}}
+    <h1>Restaurant(s) Information</h1>
+    <div class="center">
+      <table>
+        <thead>
+          <th>Name</th>
+          <th>Cuisine</th>
+        </thead>
+        <tbody>
+          {{#each restaurants}}
+            <tr>
+                <td>{{this.name}}</td>
+                <td>{{this.cuisine}}</td>
+            </tr>
+          {{/each}}
+        </tbody>
+      </table> 
     </div>
   </body>
 </html>

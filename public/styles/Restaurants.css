@@ -1,6 +1,110 @@
 .grid-container {
     display: grid;
-    grid-template-columns: repeat(3, 1fr);
+    grid-template-columns: repeat(4, 1fr);
     gap: 10px;
-    grid-auto-rows: minmax(100px, auto);
+    grid-auto-rows: minmax(20px, auto);
+}
+
+body {
+    padding: 50px;
+    font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
+}
+
+label {
+    font-weight: bold;
+    text-align: left;
+}
+
+
+div {
+    border-radius: 5px;
+    background-color: #f2f2f2;
+    padding: 20px;
+    width: 50%;
+  }
+
+input[type=text] {
+    width: 50%;
+    padding: 12px 20px;
+    margin: 8px 0;
+    display: inline-block;
+    box-sizing: border-box;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+  }
+
+header {
+    text-align: center;
+    padding: 1rem;
+    background-color: lightseagreen;
+    color: white;
+    font-weight: bolder;
+    font-size: 18px;
+    position: fixed;
+    right: 0;
+    left: 0;
+    top: 0;
+}
+
+footer {
+    text-align: center;
+    padding: 1rem;
+    background-color: lightseagreen;
+    font-weight: bolder;
+    font-size: 14px;
+    position: fixed;
+    right: 0;
+    left: 0;
+    bottom: 0;
+}
+
+h1 {
+    text-align: center;
+}
+
+footer span {
+        color: white;
+}
+
+.center {
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+.Submit {
+    background-color: green;
+    color: white;
+    font-weight: bold;
+    font-size: 14px;
+    height: 40px;
+    width: 100px;
+}
+
+
+.Reset {
+    background-color: blue;
+    color: white;
+    font-weight: bold;
+    font-size: 14px;
+    height: 40px;
+    width: 100px;
+}
+
+table {
+  width: 100%;
+  font-family: Arial, Helvetica, sans-serif;
+  border-collapse: collapse;
+}
+
+table td, th {
+    border: 1px solid #ddd;
+    padding: 8px;
+}
+
+table th {
+    background-color: rgb(96, 94, 94);
+    color: white;
+    padding-top: 12px;
+    padding-bottom: 12px;
+    text-align: left;
 }

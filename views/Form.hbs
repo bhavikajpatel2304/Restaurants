@@ -2,23 +2,20 @@
 <html>
   <head>
     <title></title>
-    <style>
-        th, td {
-            padding: 5px;
-        }
-        table {
-            margin-bottom: 50px
-        }
-    </style>
   </head>
   <body>
-      <form method="GET" action="/api/find-restaurants">
-        <pre>
-            Page<input type="text" name="page" placeholder="Page"/><br>
-            Per Page<input type="text" name="perPage" placeholder="Per Page"/><br>
-            Borough<input type="text" name="borough" placeholder="Borough"/><br>
-            <input type="submit" value="Submit"/>
-        </pre>
-      </form>
+    <div class="center">
+        <form method="GET" action="/api/find-restaurants">
+          <pre>
+                  <label for="page">Enter Page:</label>       <input type="text" name="page" placeholder="Page"/><br/>
+
+                  <label for="perPage">Enter Per Page:</label>   <input type="text" name="perPage" placeholder="Per Page"/><br/>
+
+                  <label for="borough">Enter Borough:</label>    <input type="text" name="borough" placeholder="Borough"/><br/>
+
+                      <input class="Submit" type="submit" value="Submit"/>    <input class="Reset" type="reset" value="Reset"/>
+          </pre>
+        </form>
+      </div>
   </body>
 </html>
