@@ -11,12 +11,70 @@ const Code = require("../utils/code");
 const Response = require("../utils/response");
 const Controller = require("./controller");
 const { celebrate, Joi, Segments } = require('celebrate');
+const checkAuth = require("../middleware/check-auth");
 
 const router = express.Router();
 
 // POST
+// path - /api/login
+router.post("/login", 
+
+    // middleware to handle errors
+    celebrate({
+        [Segments.BODY]: Joi.object().keys({
+            email: Joi.string().email().required(),
+            password: Joi.string().required()
+        })
+    }),
+
+    async (req, res, next) => {
+        
+        const response = await Controller.loginUser(req);
+
+        if(response.error) return Response.error(res, Code.DATABASE_ERROR, "Something went wrong!");
+
+        else if(response.userNotFound) return Response.error(res, Code.BAD_REQUEST, "User not found with given email");
+
+        else if(response.invalidPassword) return Response.error(res, Code.INVALID_CREDENTIALS, "Password is incorrect!")
+
+        else if(response.tokenNotGenerated) return Response.error(res, Code.DATABASE_ERROR, "Token not generated!")
+
+        else if(response.token) return Response.success(res, Code.SUCCESS, "User found!", response);
+    }
+)
+
+// POST
+// path - /api/logout
+router.post("/logout",
+
+    // middleware to check user session
+    checkAuth,
+
+    // middleware to handle errors
+    celebrate({
+        [Segments.BODY]: Joi.object().keys({
+            session_id: Joi.string().required(),
+        })
+    }),
+
+    async (req, res, next) => {
+
+        const response = await Controller.logoutUser(req.body.session_id);
+
+        if(response.error) return Response.error(res, Code.DATABASE_ERROR, "Something went wrong!");
+
+        else if(response.sessionNotFound) return Response.error(res, Code.BAD_REQUEST, "Session not found with given Id");
+
+        else if(response.logoutUser) return Response.success(res, Code.SUCCESS, "User has been logged out succesfully!")
+    }
+)
+
+// POST
 // path - /api/restaurants/
 router.post("/restaurants",
+
+    // middleware to check user session
+    checkAuth,
 
     async (req, res) => {
         // collect data
@@ -50,6 +108,9 @@ router.post("/restaurants",
 // path - /api/restaurants/
 router.get("/restaurants/:_id?",
 
+    // middleware to check user session
+    checkAuth,
+
     // middleware to handle errors
     celebrate({
         [Segments.QUERY]: Joi.object().keys({
@@ -82,6 +143,9 @@ router.get("/restaurants/:_id?",
 // path - /api/find
 router.get("/find", 
 
+    // middleware to check user session
+    checkAuth,
+
     async(req, res, next) => {
 
         res.render("Form")
@@ -91,6 +155,9 @@ router.get("/find",
 // GET
 // path - /api/find-restaurants
 router.get("/find-restaurants",
+
+    // middleware to check user session
+    checkAuth,
 
     // middleware to handle errors
     celebrate({
@@ -116,6 +183,9 @@ router.get("/find-restaurants",
 // PUT
 // path - /api/restaurants
 router.put("/restaurants/:_id?",
+
+    // middleware to check user session
+    checkAuth,
 
     async(req, res) => {
 
@@ -158,6 +228,9 @@ router.put("/restaurants/:_id?",
 // DELETE
 // path - /api/restaurants
 router.delete("/restaurants/:_id?",
+
+    // middleware to check user session
+    checkAuth,
 
     async(req, res) => {
 

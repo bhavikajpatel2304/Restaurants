@@ -7,6 +7,70 @@
  * *********************************************************************************/
 
 const Restaurant = require("../model/Restaurant");
+const User = require("../model/User");
+const Session = require("../model/Session");
+const Helper = require("../utils/helper");
+
+// function to login user
+const loginUser = async (req) => {
+    let user, result ={};
+
+    try {
+        user = await User.findOne({email: req.body.email});
+
+        if(!user) {
+            result.userNotFound = true;
+            return result;
+        }
+
+        const isValidPassword = await Helper.comparePassword(req.body.password, user.password);
+
+        if(!isValidPassword) {
+            result.invalidPassword = true;
+            return result;
+        }
+
+        const token = await Helper.generateToken();
+
+        if(token.tokenNotGenerated) {
+            result.tokenNotGenerated = true;
+            return result;
+        }
+
+        await new Session({session_id: token.session_id, is_active: true}).save();
+
+        result.token = token;
+        return result;
+    
+    } catch (error) {
+        result.error = true;
+        return result;
+    }
+}
+
+// logout User
+const logoutUser = async (session_id) => {
+
+    let session, result = {};
+
+    try {
+        session = await Session.findOne({session_id: session_id});
+
+        if(!session) {
+            result.sessionNotFound = true;
+            return result;
+        }
+
+        session.is_active = false;
+        await session.save();
+
+        result.logoutUser = true;
+        return result;
+    } catch(err) {
+        result.error = true;
+        return result;
+    }
+}
 
 // create new restaurants
 const addNewRestaurant = async (data) => {
@@ -85,6 +149,8 @@ const deleteRestaurantById = async (_id) => {
 }
 
 module.exports = {
+    loginUser,
+    logoutUser,
     addNewRestaurant,
     getRestaurantById,
     getAllRestaurants,
