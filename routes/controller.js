@@ -16,7 +16,7 @@ const loginUser = async (req) => {
     let user, result ={};
 
     try {
-        user = await User.findOne({email: req.body.email});
+        user = await User.findOne({email: req.body.email}).lean();
 
         if(!user) {
             result.userNotFound = true;

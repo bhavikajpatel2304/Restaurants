@@ -6,6 +6,9 @@
   <body>
     <div class="center">
         <form method="GET" action="/api/find-restaurants">
+        
+        <input type="hidden" id="sessionVal" value={{response.session_id}} />
+        <input type="hidden" id="tokenVal" value={{response.token}} />
           <pre>
                   <label for="page">Enter Page:</label>       <input type="text" name="page" placeholder="Page"/><br/>
 
@@ -16,6 +19,16 @@
                       <input class="Submit" type="submit" value="Submit"/>    <input class="Reset" type="reset" value="Reset"/>
           </pre>
         </form>
+        <script>
+          const session_id = document.getElementById('sessionVal').value;
+          const token = document.getElementById('tokenVal').value;
+          window.localStorage.setItem("session", session_id);
+          
+
+          $.ajax({
+            headers: {"Authorization": `bearer ${window.localStorage.setItem("token", token)}`}
+          });
+        </script>
       </div>
   </body>
 </html>

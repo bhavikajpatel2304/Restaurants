@@ -39,7 +39,10 @@ router.post("/login",
 
         else if(response.tokenNotGenerated) return Response.error(res, Code.DATABASE_ERROR, "Token not generated!")
 
-        else if(response.token) return Response.success(res, Code.SUCCESS, "User found!", response);
+        else if(response.token) {
+            res.render("Form", {response: response.token});
+            //return Response.success(res, Code.SUCCESS, "User found!", response);
+        }
     }
 )
 
@@ -149,6 +152,19 @@ router.get("/find",
     async(req, res, next) => {
 
         res.render("Form")
+    }
+)
+
+// GET
+// path - /api/
+router.get("/", 
+
+    // middleware to check user session
+    //checkAuth,
+
+    async(req, res, next) => {
+
+        res.render("Login")
     }
 )
 
