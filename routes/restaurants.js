@@ -169,6 +169,15 @@ router.get("/",
 )
 
 // GET
+// path - /api/view-restaurants
+router.get("/view-restaurants",
+    async(req, res) => {
+        let response = await Controller.getAllRestaurants(req);
+
+        res.render("Restaurants", {restaurants: response.restaurant_details})
+});
+
+// GET
 // path - /api/find-restaurants
 router.get("/find-restaurants",
 
@@ -190,8 +199,8 @@ router.get("/find-restaurants",
 
         if(response.error)return Response.error(res, Code.UNPROCESSABLE_ENTITY, response.error);
         
-        else if(response.restaurant_details) res.render("Restaurants", {restaurants: response.restaurant_details});
-
+        else if(response.restaurant_details) return Response.success(res, Code.SUCCESS, "Data Found", response.restaurant_details);
+        
         else return Response.error(res, Code.DATABASE_ERROR, "Something went wrong!");
     }
 )

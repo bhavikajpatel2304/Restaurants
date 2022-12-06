@@ -80,6 +80,15 @@ footer span {
     width: 100px;
 }
 
+.back {
+    background-color: mediumseagreen;
+    color: white;
+    font-weight: bold;
+    font-size: 14px;
+    height: 40px;
+    width: 300px;
+}
+
 
 .Reset {
     background-color: blue;
